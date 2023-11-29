@@ -123,7 +123,7 @@
             // 
             // panelBody
             // 
-            panelBody.Dock = DockStyle.Fill;
+            panelBody.Anchor = AnchorStyles.None;
             panelBody.Location = new Point(151, 0);
             panelBody.Name = "panelBody";
             panelBody.Size = new Size(649, 450);

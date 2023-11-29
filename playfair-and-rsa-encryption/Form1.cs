@@ -47,7 +47,7 @@ namespace playfair_and_rsa_encryption
 
         private void btnPlayfair_Click(object sender, EventArgs e)
         {
-            navigationControl.Display(0);
+            navigationControl.Display(0); 
             navigationButtons.Highlight(btnPlayfair);
         }
 
