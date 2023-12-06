@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button2 = new Button();
-            button1 = new Button();
+            btn_gen_public_key = new Button();
+            btn_gen_prime_numbers = new Button();
             tb_d = new TextBox();
             tb_phi = new TextBox();
             tb_n = new TextBox();
@@ -51,23 +51,24 @@
             label1 = new Label();
             SuspendLayout();
             // 
-            // button2
+            // btn_gen_public_key
             // 
-            button2.Location = new Point(754, 233);
-            button2.Name = "button2";
-            button2.Size = new Size(249, 27);
-            button2.TabIndex = 57;
-            button2.Text = "Generate public key";
-            button2.UseVisualStyleBackColor = true;
+            btn_gen_public_key.Location = new Point(754, 233);
+            btn_gen_public_key.Name = "btn_gen_public_key";
+            btn_gen_public_key.Size = new Size(249, 27);
+            btn_gen_public_key.TabIndex = 57;
+            btn_gen_public_key.Text = "Generate public key";
+            btn_gen_public_key.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // btn_gen_prime_numbers
             // 
-            button1.Location = new Point(754, 56);
-            button1.Name = "button1";
-            button1.Size = new Size(249, 74);
-            button1.TabIndex = 56;
-            button1.Text = "Generate prime numbers";
-            button1.UseVisualStyleBackColor = true;
+            btn_gen_prime_numbers.Location = new Point(754, 56);
+            btn_gen_prime_numbers.Name = "btn_gen_prime_numbers";
+            btn_gen_prime_numbers.Size = new Size(249, 74);
+            btn_gen_prime_numbers.TabIndex = 56;
+            btn_gen_prime_numbers.Text = "Generate prime numbers";
+            btn_gen_prime_numbers.UseVisualStyleBackColor = true;
+            btn_gen_prime_numbers.Click += btn_gen_prime_numbers_Click;
             // 
             // tb_d
             // 
@@ -244,8 +245,8 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(label1);
-            Controls.Add(button2);
-            Controls.Add(button1);
+            Controls.Add(btn_gen_public_key);
+            Controls.Add(btn_gen_prime_numbers);
             Controls.Add(tb_d);
             Controls.Add(tb_phi);
             Controls.Add(tb_n);
@@ -273,8 +274,8 @@
 
         #endregion
 
-        private Button button2;
-        private Button button1;
+        private Button btn_gen_public_key;
+        private Button btn_gen_prime_numbers;
         private TextBox tb_d;
         private TextBox tb_phi;
         private TextBox tb_n;
