@@ -51,7 +51,7 @@
             flowLayoutPanel1.Dock = DockStyle.Left;
             flowLayoutPanel1.Location = new Point(0, 0);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(151, 450);
+            flowLayoutPanel1.Size = new Size(151, 593);
             flowLayoutPanel1.TabIndex = 0;
             // 
             // panel2
@@ -123,17 +123,18 @@
             // 
             // panelBody
             // 
-            panelBody.Anchor = AnchorStyles.None;
+            panelBody.Dock = DockStyle.Fill;
             panelBody.Location = new Point(151, 0);
             panelBody.Name = "panelBody";
-            panelBody.Size = new Size(649, 450);
+            panelBody.Size = new Size(1057, 593);
             panelBody.TabIndex = 1;
+            panelBody.Paint += panelBody_Paint;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1208, 593);
             Controls.Add(panelBody);
             Controls.Add(flowLayoutPanel1);
             Name = "Form1";

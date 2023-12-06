@@ -35,7 +35,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(205, 227);
+            label1.Location = new Point(395, 277);
             label1.Name = "label1";
             label1.Size = new Size(280, 41);
             label1.TabIndex = 0;
@@ -47,7 +47,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(label1);
             Name = "UserControlPlayfair";
-            Size = new Size(700, 500);
+            Size = new Size(1060, 600);
             ResumeLayout(false);
             PerformLayout();
         }
