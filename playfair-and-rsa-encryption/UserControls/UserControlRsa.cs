@@ -15,8 +15,6 @@ namespace playfair_and_rsa_encryption.UserControls
     {
         string charsList = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+-*/=_?.,#";
         List<int> primeList = GeneratePrimesUpTo(100);
-
-
         public UserControlRsa()
         {
             InitializeComponent();
@@ -122,12 +120,6 @@ namespace playfair_and_rsa_encryption.UserControls
             return true;
         }
 
-        // Kiểm tra số nguyên tố bằng thuật toán Miller-Rabin
-        bool IsPrime2(int number)
-        {
-            return false;
-        }
-
         // Tính UCLN
         int CalculateGreatestCommonDivisor(int a, int b)
         {
@@ -188,12 +180,12 @@ namespace playfair_and_rsa_encryption.UserControls
             bool isPNumeric = int.TryParse(tb_p.Text, out int a);
             bool isQNumeric = int.TryParse(tb_q.Text, out int b);
             bool isENumeric = int.TryParse(tb_e.Text, out int c);
-            int phiN = CalculatePhiN(a, b);
             string d = tb_input.Text;
 
-            if (ValidatePrimeNumP(isPNumeric, a)) { mess += "Invalid prime number p!" + Environment.NewLine; }
-            if (ValidatePrimeNumQ(isQNumeric, b)) { mess += "Invalid prime number q!" + Environment.NewLine; }
-            if (ValidatePublicKeyE(isENumeric, c, phiN)) { mess += "Invalid public key e!" + Environment.NewLine; }
+            if (!ValidatePrimeNumP(isPNumeric, a)) { mess += "Invalid prime number p!" + Environment.NewLine; }
+            if (!ValidatePrimeNumQ(isQNumeric, b)) { mess += "Invalid prime number q!" + Environment.NewLine; }
+            int phiN = CalculatePhiN(a, b);
+            if (!ValidatePublicKeyE(isENumeric, c, phiN)) { mess += "Invalid public key e!" + Environment.NewLine; }
             if (!isEncrypt && !IsValidDecryptInput(d)) { mess += "Invalid input for decryption!" + Environment.NewLine; }
 
             if (mess != "")
@@ -326,9 +318,6 @@ namespace playfair_and_rsa_encryption.UserControls
             string input = tb_input.Text;
             string output = "";
             int p = 1, q = 1, eKey = 1, n = 1, dKey = 1, phiN = 1;
-
-            // TODO: Làm sao để tính N, phiN, E và D ngay khi q và p hợp lệ
-
             int status = ValidateInput(false);
 
             if (status == 0)
@@ -385,9 +374,22 @@ namespace playfair_and_rsa_encryption.UserControls
         }
 
         private void tb_p_TextChanged(object sender, EventArgs e)
-        {
+        {          
+            // TODO: Làm sao để tính N, phiN, E và D ngay khi q và p hợp lệ
             if (tb_p.Text != "" && tb_q.Text != "")
             {
+
+                bool isPNumeric = int.TryParse(tb_p.Text, out int a);
+                bool isQNumeric = int.TryParse(tb_q.Text, out int b);
+                if (!ValidatePrimeNumP(isPNumeric, a) || !ValidatePrimeNumQ(isQNumeric, b))
+                {
+                    tb_n.Text = "";
+                    tb_phi.Text = "";
+                    tb_d.Text = "";
+                    return;
+                }
+
+                // Nếu 2 số nguyên tố đều hợp lệ, tính n, phiN
                 tb_n.Text = CalculateModulusN(int.Parse(tb_p.Text), int.Parse(tb_q.Text)).ToString();
                 tb_phi.Text = CalculatePhiN(int.Parse(tb_p.Text), int.Parse(tb_q.Text)).ToString();
             }
@@ -395,6 +397,7 @@ namespace playfair_and_rsa_encryption.UserControls
             {
                 tb_n.Text = "";
                 tb_phi.Text = "";
+                tb_d.Text = "";
             }
         }
     }
