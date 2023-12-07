@@ -14,6 +14,8 @@ namespace playfair_and_rsa_encryption.UserControls
     public partial class UserControlRsa : UserControl
     {
         string charsList = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+-*/=_?.,#";
+        List<int> primeList = GeneratePrimesUpTo(100);
+
 
         public UserControlRsa()
         {
@@ -52,8 +54,59 @@ namespace playfair_and_rsa_encryption.UserControls
             return result;
         }
 
+        // Tạo danh sách số nguyên tố từ 1 đến n
+        static List<int> GeneratePrimesUpTo(int n)
+        {
+            if (n <= 1)
+            {
+                return new List<int>();
+            }
+
+            List<bool> isPrime = new List<bool>(n + 1) { true };
+            for (int i = 0; i <= n; i++)
+            {
+                isPrime.Add(true);
+            }
+
+            isPrime[0] = isPrime[1] = false;
+            for (int i = 2; i * i <= n; i++)
+            {
+                if (isPrime[i])
+                {
+                    for (int j = i * i; j <= n; j += i)
+                    {
+                        isPrime[j] = false;
+                    }
+                }
+            }
+
+            List<int> primes = new List<int>();
+            for (int i = 2; i <= n; i++)
+            {
+                if (isPrime[i])
+                {
+                    primes.Add(i);
+                }
+            }
+
+            return primes;
+        }
+
+        // Lấy ngẫu nhiên 1 số từ danh sách
+        int GetRandom(List<int> list)
+        {
+            if (list == null || list.Count == 0)
+            {
+                throw new ArgumentException("List cannot be null or empty.");
+            }
+
+            var random = new Random();
+            int index = random.Next(0, list.Count);
+
+            return list[index];
+        }
+
         // Kiểm tra số nguyên tố
-        // TODO: Khuyến khích dùng sàng nguyên tố
         bool IsPrime(int number)
         {
             if (number <= 1) return false;
@@ -69,23 +122,20 @@ namespace playfair_and_rsa_encryption.UserControls
             return true;
         }
 
+        // Kiểm tra số nguyên tố bằng thuật toán Miller-Rabin
+        bool IsPrime2(int number)
+        {
+            return false;
+        }
+
         // Tính UCLN
         int CalculateGreatestCommonDivisor(int a, int b)
         {
-            int t;
-            if (b < a)
+            if (a == 0)
             {
-                t = b;
-                b = a;
-                a = t;
+                return b;
             }
-            while (b != 0)
-            {
-                t = a;
-                a = b;
-                b = t % b;
-            }
-            return a;
+            return CalculateGreatestCommonDivisor(b % a, a);
         }
 
         // Kiểm tra 2 số là số nguyên tố cùng nhau
@@ -113,20 +163,37 @@ namespace playfair_and_rsa_encryption.UserControls
             return (p - 1) * (q - 1);
         }
 
+        bool ValidatePrimeNumP(bool isPNumeric, int p)
+        {
+            if (!isPNumeric || p == 0 || !IsPrime(p)) return false;
+            return true;
+        }
+
+        bool ValidatePrimeNumQ(bool isQNumeric, int q)
+        {
+            if (!isQNumeric || q == 0 || !IsPrime(q)) return false;
+            return true;
+        }
+
+        bool ValidatePublicKeyE(bool isENumeric, int e, int phiN)
+        {
+            if (!isENumeric || e >= phiN || !IsRelativelyPrime(phiN, e)) return false;
+            return true;
+        }
 
         // Kiểm tra q, p, e, input hợp lệ
-        int validateInput(bool isEncrypt)
+        int ValidateInput(bool isEncrypt)
         {
             string mess = "";
             bool isPNumeric = int.TryParse(tb_p.Text, out int a);
             bool isQNumeric = int.TryParse(tb_q.Text, out int b);
             bool isENumeric = int.TryParse(tb_e.Text, out int c);
+            int phiN = CalculatePhiN(a, b);
             string d = tb_input.Text;
 
-            if (!isPNumeric || a == 0 || !IsPrime(a)) { mess += "Invalid prime number p!" + Environment.NewLine; }
-            if (!isQNumeric || b == 0 || !IsPrime(b)) { mess += "Invalid prime number q!" + Environment.NewLine; }
-            int phiN = CalculatePhiN(a, b);
-            if (!isENumeric || c >= phiN || !IsRelativelyPrime(phiN, c)) { mess += "Invalid public key e!" + Environment.NewLine; }
+            if (ValidatePrimeNumP(isPNumeric, a)) { mess += "Invalid prime number p!" + Environment.NewLine; }
+            if (ValidatePrimeNumQ(isQNumeric, b)) { mess += "Invalid prime number q!" + Environment.NewLine; }
+            if (ValidatePublicKeyE(isENumeric, c, phiN)) { mess += "Invalid public key e!" + Environment.NewLine; }
             if (!isEncrypt && !IsValidDecryptInput(d)) { mess += "Invalid input for decryption!" + Environment.NewLine; }
 
             if (mess != "")
@@ -209,14 +276,126 @@ namespace playfair_and_rsa_encryption.UserControls
         }
 
 
-        private void UserControlRsa_Load(object sender, EventArgs e)
+        private void btn_encrypt_Click(object sender, EventArgs e)
         {
+            string input = tb_input.Text;
+            string output = "";
+            int p = 1, q = 1, eKey = 1, n = 1, dKey = 1, phiN = 1;
 
+            int status = ValidateInput(true);
+            if (status == 0)
+                return;
+            else
+            {
+                p = int.Parse(tb_p.Text);
+                q = int.Parse(tb_q.Text);
+                eKey = int.Parse(tb_e.Text);
+            }
+
+            n = CalculateModulusN(p, q);
+            phiN = CalculatePhiN(p, q);
+            dKey = CalculatePrivateKeyD(eKey, phiN);
+            tb_n.Text = n.ToString();
+            tb_phi.Text = phiN.ToString();
+            tb_d.Text = dKey.ToString();
+
+            if (input == "") return;
+
+            List<string> twoDigitList = ParseEncryptInputToIndexList(input);
+
+            List<string> confidentialityEncryptCode = new List<string>(twoDigitList.Count);
+            for (int i = 0; i < twoDigitList.Count; i++)
+            {
+                string temp = EncryptForConfidentiality(eKey, n, twoDigitList[i]);
+                confidentialityEncryptCode.Add(temp);
+            }
+
+            List<string> authenticationEncryptCode = new List<string>(twoDigitList.Count);
+            for (int i = 0; i < confidentialityEncryptCode.Count; i++)
+            {
+                string temp = EncryptForAuthentication(dKey, n, confidentialityEncryptCode[i]);
+                authenticationEncryptCode.Add(temp);
+            }
+
+            output = String.Join("#", authenticationEncryptCode);
+            tb_output.Text = output;
         }
 
+        private void btn_decrypt_Click(object sender, EventArgs e)
+        {
+            string input = tb_input.Text;
+            string output = "";
+            int p = 1, q = 1, eKey = 1, n = 1, dKey = 1, phiN = 1;
+
+            // TODO: Làm sao để tính N, phiN, E và D ngay khi q và p hợp lệ
+
+            int status = ValidateInput(false);
+
+            if (status == 0)
+                return;
+            else
+            {
+                p = int.Parse(tb_p.Text);
+                q = int.Parse(tb_q.Text);
+                eKey = int.Parse(tb_e.Text);
+            }
+
+            n = CalculateModulusN(p, q);
+            phiN = CalculatePhiN(p, q);
+            dKey = CalculatePrivateKeyD(eKey, phiN);
+            tb_n.Text = n.ToString();
+            tb_phi.Text = phiN.ToString();
+            tb_d.Text = dKey.ToString();
+
+            if (input == "") return;
+
+            List<string> chunkList = BreakDecryptInputToIndexList(input);
+
+            List<string> authenticationDecryptCode = new List<string>(chunkList.Count);
+            for (int i = 0; i < chunkList.Count; i++)
+            {
+                string temp = DecryptForAuthentication(eKey, n, chunkList[i]);
+                authenticationDecryptCode.Add(temp);
+            }
+
+            List<string> confidentialityDecryptCode = new List<string>(chunkList.Count);
+            for (int i = 0; i < authenticationDecryptCode.Count; i++)
+            {
+                string temp = DecryptForConfidentiality(dKey, n, authenticationDecryptCode[i]);
+                confidentialityDecryptCode.Add(temp);
+            }
+
+            output = String.Join("", confidentialityDecryptCode.Select<string, char>(x => GetCharFromIndex(int.Parse(x))));
+            tb_output.Text = output;
+        }
         private void btn_gen_prime_numbers_Click(object sender, EventArgs e)
         {
+            // Random 2 số nguyên tố khác nhau
 
+            int p = GetRandom(primeList);
+            int q = GetRandom(primeList);
+
+            while (p == q)
+            {
+                q = GetRandom(primeList);
+            }
+
+            tb_p.Text = p.ToString();
+            tb_q.Text = q.ToString();
+        }
+
+        private void tb_p_TextChanged(object sender, EventArgs e)
+        {
+            if (tb_p.Text != "" && tb_q.Text != "")
+            {
+                tb_n.Text = CalculateModulusN(int.Parse(tb_p.Text), int.Parse(tb_q.Text)).ToString();
+                tb_phi.Text = CalculatePhiN(int.Parse(tb_p.Text), int.Parse(tb_q.Text)).ToString();
+            }
+            else
+            {
+                tb_n.Text = "";
+                tb_phi.Text = "";
+            }
         }
     }
 }

@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            btn_gen_public_key = new Button();
             btn_gen_prime_numbers = new Button();
             tb_d = new TextBox();
             tb_phi = new TextBox();
@@ -50,15 +49,6 @@
             label6 = new Label();
             label1 = new Label();
             SuspendLayout();
-            // 
-            // btn_gen_public_key
-            // 
-            btn_gen_public_key.Location = new Point(754, 233);
-            btn_gen_public_key.Name = "btn_gen_public_key";
-            btn_gen_public_key.Size = new Size(249, 27);
-            btn_gen_public_key.TabIndex = 57;
-            btn_gen_public_key.Text = "Generate public key";
-            btn_gen_public_key.UseVisualStyleBackColor = true;
             // 
             // btn_gen_prime_numbers
             // 
@@ -132,6 +122,7 @@
             btn_decrypt.TabIndex = 49;
             btn_decrypt.Text = "Decrypt";
             btn_decrypt.UseVisualStyleBackColor = true;
+            btn_decrypt.Click += btn_decrypt_Click;
             // 
             // btn_encrypt
             // 
@@ -141,6 +132,7 @@
             btn_encrypt.TabIndex = 48;
             btn_encrypt.Text = "Encrypt";
             btn_encrypt.UseVisualStyleBackColor = true;
+            btn_encrypt.Click += btn_encrypt_Click;
             // 
             // tb_e
             // 
@@ -155,6 +147,7 @@
             tb_q.Name = "tb_q";
             tb_q.Size = new Size(513, 27);
             tb_q.TabIndex = 46;
+            tb_q.TextChanged += tb_p_TextChanged;
             // 
             // tb_p
             // 
@@ -162,6 +155,7 @@
             tb_p.Name = "tb_p";
             tb_p.Size = new Size(513, 27);
             tb_p.TabIndex = 45;
+            tb_p.TextChanged += tb_p_TextChanged;
             // 
             // tb_output
             // 
@@ -245,7 +239,6 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(label1);
-            Controls.Add(btn_gen_public_key);
             Controls.Add(btn_gen_prime_numbers);
             Controls.Add(tb_d);
             Controls.Add(tb_phi);
@@ -267,14 +260,11 @@
             Controls.Add(label6);
             Name = "UserControlRsa";
             Size = new Size(1060, 600);
-            Load += UserControlRsa_Load;
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private Button btn_gen_public_key;
         private Button btn_gen_prime_numbers;
         private TextBox tb_d;
         private TextBox tb_phi;
