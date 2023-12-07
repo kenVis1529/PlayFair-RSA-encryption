@@ -5,8 +5,8 @@ namespace playfair_and_rsa_encryption
     public partial class Form1 : Form
     {
 
-        NavigationControl navigationControl;
-        NavigationButtons navigationButtons;
+        private NavigationControl navigationControl;
+        private NavigationButtons navigationButtons;
 
         // Khởi tạo màu của các nút navigation
         Color btnDefaultColor = Color.FromArgb(0, 48, 73);
