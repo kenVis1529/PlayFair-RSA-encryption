@@ -142,6 +142,18 @@ namespace playfair_and_rsa_encryption.UserControls
             return ptrs;
         }
 
+        private int CheckForNumbersOrSpecialCharacters(string input)
+        {
+            if (input.Any(char.IsDigit) || input.Any(c => !char.IsLetterOrDigit(c)))
+            {
+                return 1; // Chuỗi chứa số hoặc kí tự đặc biệt.
+            }
+            else
+            {
+                return 0; // Chuỗi không chứa số hoặc kí tự đặc biệt.
+            }
+        }
+
         static void Encrypt(char[] str, char[,] keyT, int ps)
         {
             int[] a = new int[4];
@@ -191,6 +203,14 @@ namespace playfair_and_rsa_encryption.UserControls
                     str[i + 1] = keyT[a[2], a[1]];
                 }
             }
+        }
+
+        private void tbKey_LostFocus(object sender, EventArgs e)
+        {
+            string keyValue = tbKey.Text;
+            if (CheckForNumbersOrSpecialCharacters(keyValue) == 1)
+                MessageBox.Show("The key contains numbers or special characters.");
+
         }
 
 
@@ -260,6 +280,8 @@ namespace playfair_and_rsa_encryption.UserControls
             ps = RemoveSpace(ref str, ps);
             ToLowerCase(str, ps);
 
+            ps = Prepare(str, ps);
+
             generateKeyTable(key, ks, keyT);
 
 
@@ -286,6 +308,14 @@ namespace playfair_and_rsa_encryption.UserControls
                     rtbEncrypted.AppendText(" ");
 
             }
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            tbKey.Clear();
+            rtbPlain.Clear();
+            rtbEncrypted.Clear();
+            rtbTable.Clear();
         }
     }
 }
