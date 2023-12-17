@@ -216,6 +216,8 @@ namespace playfair_and_rsa_encryption.UserControls
 
         private void btnEncrypt_Click(object sender, EventArgs e)
         {
+            rtbEncrypted.Clear();
+            rtbTable.Clear();
             lbEncrypted.Text = "Encrypted text";
             char[] str = rtbPlain.Text.ToCharArray();
             char[] key = tbKey.Text.ToCharArray();
@@ -264,6 +266,8 @@ namespace playfair_and_rsa_encryption.UserControls
 
         private void btnDecrypt_Click(object sender, EventArgs e)
         {
+            rtbEncrypted.Clear();
+            rtbTable.Clear();
             lbEncrypted.Text = "Decrypted text";
             char[] str = rtbPlain.Text.ToCharArray();
             char[] key = tbKey.Text.ToCharArray();
