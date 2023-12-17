@@ -43,6 +43,7 @@ namespace playfair_and_rsa_encryption.UserControls
             result.CopyTo(plain, 0);
             return count;
         }
+
         //Generate the key square
         static void generateKeyTable(char[] key, int ks, char[,] keyT)
         {
@@ -132,12 +133,33 @@ namespace playfair_and_rsa_encryption.UserControls
             return (a % 5);
         }
 
+        static char[] AddCharacterToEnd(ref char[] str, char newCharacter)
+        {
+            // Create a new array with increased length
+            char[] newArray = new char[str.Length + 1];
+
+            // Copy the elements from the original array to the new array
+            Array.Copy(str, newArray, str.Length);
+
+            // Add the new character at the end of the new array
+            newArray[newArray.Length - 1] = newCharacter;
+
+            return newArray;
+        }
+
         //Make the plain text length to be even
-        static int Prepare(char[] str, int ptrs)
+        static int Prepare(ref char[] str, int ptrs)
         {
             if (ptrs % 2 != 0)
             {
-                str[ptrs++] = 'x';
+                str = AddCharacterToEnd(ref str, 'x');
+                ptrs++;
+            }
+
+            for (int i = 0; i < ptrs - 1; i++)
+            {
+                if (str[i] == str[i + 1])
+                    str[i + 1] = 'x';
             }
             return ptrs;
         }
@@ -154,34 +176,33 @@ namespace playfair_and_rsa_encryption.UserControls
             }
         }
 
-        static void Encrypt(char[] str, char[,] keyT, int ps)
-        {
-            int[] a = new int[4];
+          static void Encrypt(ref char[] str, char[,] keyT, int ps)
+          {
+              int[] a = new int[4];
 
-            for (int i = 0; i < ps; i += 2)
-            {
-                Search(keyT, str[i], str[i + 1], a);
+              for (int i = 0; i < ps; i += 2)
+              {
+                    Search(keyT, str[i], str[i + 1], a);
 
-                if (a[0] == a[2])
-                {
-                    str[i] = keyT[a[0], Mod5(a[1] + 1)];
-                    str[i + 1] = keyT[a[0], Mod5(a[3] + 1)];
-                }
-                else if (a[1] == a[3])
-                {
-                    str[i] = keyT[Mod5(a[0] + 1), a[1]];
-                    str[i + 1] = keyT[Mod5(a[2] + 1), a[1]];
-                }
-                else
-                {
-                    str[i] = keyT[a[0], a[3]];
-                    str[i + 1] = keyT[a[2], a[1]];
-                }
+                    if (a[0] == a[2])
+                    {
+                        str[i] = keyT[a[0], Mod5(a[1] + 1)];
+                        str[i + 1] = keyT[a[0], Mod5(a[3] + 1)];
+                    }
+                    else if (a[1] == a[3])
+                    {
+                        str[i] = keyT[Mod5(a[0] + 1), a[1]];
+                        str[i + 1] = keyT[Mod5(a[2] + 1), a[1]];
+                    }
+                    else
+                    {
+                        str[i] = keyT[a[0], a[3]];
+                        str[i + 1] = keyT[a[2], a[1]];
+                    }        
+              }
+          }
 
-            }
-        }
-
-        static void Decrypt(char[] str, char[,] keyT, int ps)
+        static void Decrypt(ref char[] str, char[,] keyT, int ps)
         {
             int[] a = new int[4];
             for (int i = 0; i < ps; i += 2)
@@ -210,7 +231,6 @@ namespace playfair_and_rsa_encryption.UserControls
             string keyValue = tbKey.Text;
             if (CheckForNumbersOrSpecialCharacters(keyValue) == 1)
                 MessageBox.Show("The key contains numbers or special characters.");
-
         }
 
 
@@ -234,10 +254,9 @@ namespace playfair_and_rsa_encryption.UserControls
             ps = RemoveSpace(ref str, ps);
             ToLowerCase(str, ps);
 
-            ps = Prepare(str, ps);
+            ps = Prepare(ref str, ps);
 
             generateKeyTable(key, ks, keyT);
-
 
             //Display Key matrix
             int cellWidth = 8;
@@ -253,14 +272,13 @@ namespace playfair_and_rsa_encryption.UserControls
                 rtbTable.AppendText(Environment.NewLine);
             }
 
-            Encrypt(str, keyT, ps);
+            Encrypt(ref str, keyT, ps);
 
-            for (int i = 0; i < str.Length; i++)
+            for (int i = 0; i < ps; i++)
             {
                 rtbEncrypted.AppendText(str[i].ToString());
                 if ((i + 1) % 2 == 0 && i != str.Length - 1)
                     rtbEncrypted.AppendText(" ");
-
             }
         }
 
@@ -272,7 +290,7 @@ namespace playfair_and_rsa_encryption.UserControls
             char[] str = rtbPlain.Text.ToCharArray();
             char[] key = tbKey.Text.ToCharArray();
             int ps, ks;
-            char[,] keyT = new char[5, 5];
+            char[,] keyT = new char[5,5];
 
             //Key
             ks = key.Length;
@@ -284,10 +302,9 @@ namespace playfair_and_rsa_encryption.UserControls
             ps = RemoveSpace(ref str, ps);
             ToLowerCase(str, ps);
 
-            ps = Prepare(str, ps);
+            ps = Prepare(ref str, ps);
 
             generateKeyTable(key, ks, keyT);
-
 
             //Display Key matrix
             int cellWidth = 8;
@@ -303,14 +320,13 @@ namespace playfair_and_rsa_encryption.UserControls
                 rtbTable.AppendText(Environment.NewLine);
             }
 
-            Decrypt(str, keyT, ps);
+            Decrypt(ref str, keyT, ps);
 
-            for (int i = 0; i < str.Length; i++)
+            for (int i = 0; i < ps; i++)
             {
                 rtbEncrypted.AppendText(str[i].ToString());
                 if ((i + 1) % 2 == 0 && i != str.Length - 1)
                     rtbEncrypted.AppendText(" ");
-
             }
         }
 
