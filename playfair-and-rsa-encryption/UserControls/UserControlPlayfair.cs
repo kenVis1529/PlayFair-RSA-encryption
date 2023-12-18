@@ -29,19 +29,37 @@ namespace playfair_and_rsa_encryption.UserControls
         }
 
         //Remove all spaces in a string
-        static int RemoveSpace(ref char[] plain, int ps)
-        {
-            char[] result = new char[ps];
-            int count = 0;
+        /*   static int RemoveSpace(ref char[] plain,ref int ps)
+           {
+               char[] result = new char[ps];
+               int count = 0;
 
+               for (int i = 0; i < ps; i++)
+               {
+                   if (plain[i] != ' ')
+                       result[count++] = plain[i];
+               }
+
+               result.CopyTo(plain, 0);
+               ps = count-1;
+               return count;
+           }*/
+        static int RemoveSpace(ref char[] plain, ref int ps)
+        {
+
+            List<char> newList = new List<char>();
             for (int i = 0; i < ps; i++)
             {
                 if (plain[i] != ' ')
-                    result[count++] = plain[i];
+                {
+                    newList.Add(plain[i]);
+                }
             }
 
-            result.CopyTo(plain, 0);
-            return count;
+            plain = newList.ToArray();
+
+            ps = plain.Length;
+            return ps;
         }
 
         //Generate the key square
@@ -147,22 +165,37 @@ namespace playfair_and_rsa_encryption.UserControls
             return newArray;
         }
 
-        //Make the plain text length to be even
-        static int Prepare(ref char[] str, int ptrs)
+        static int Prepare(ref char[] str, ref int ptrs)
         {
+            List<char> newList = new List<char>();
+            for (int i = 0; i < ptrs - 1; i++)
+            {
+                if (str[i] != str[i + 1])
+                {
+                    newList.Add(str[i]);
+                }
+                else
+                {
+                    newList.Add(str[i]);
+                    newList.Add('x');
+                }
+            }
+
+            newList.Add(str[ptrs - 1]);
+
+            str = newList.ToArray();
+            ptrs = str.Length;
+
+
             if (ptrs % 2 != 0)
             {
                 str = AddCharacterToEnd(ref str, 'x');
                 ptrs++;
             }
 
-            for (int i = 0; i < ptrs - 1; i++)
-            {
-                if (str[i] == str[i + 1])
-                    str[i + 1] = 'x';
-            }
             return ptrs;
         }
+
 
         private int CheckForNumbersOrSpecialCharacters(string input)
         {
@@ -180,7 +213,7 @@ namespace playfair_and_rsa_encryption.UserControls
           {
               int[] a = new int[4];
 
-              for (int i = 0; i < ps; i += 2)
+              for (int i = 0; i<ps-1; i += 2)
               {
                     Search(keyT, str[i], str[i + 1], a);
 
@@ -246,15 +279,15 @@ namespace playfair_and_rsa_encryption.UserControls
 
             //Key
             ks = key.Length;
-            ks = RemoveSpace(ref key, ks);
+            ks = RemoveSpace(ref key,ref ks);
             ToLowerCase(key, ks);
 
             //PlainText
             ps = str.Length;
-            ps = RemoveSpace(ref str, ps);
+            ps = RemoveSpace(ref str, ref ps);
             ToLowerCase(str, ps);
 
-            ps = Prepare(ref str, ps);
+            ps = Prepare(ref str,ref ps);
 
             generateKeyTable(key, ks, keyT);
 
@@ -292,42 +325,48 @@ namespace playfair_and_rsa_encryption.UserControls
             int ps, ks;
             char[,] keyT = new char[5,5];
 
-            //Key
-            ks = key.Length;
-            ks = RemoveSpace(ref key, ks);
-            ToLowerCase(key, ks);
-
-            //PlainText
-            ps = str.Length;
-            ps = RemoveSpace(ref str, ps);
-            ToLowerCase(str, ps);
-
-            ps = Prepare(ref str, ps);
-
-            generateKeyTable(key, ks, keyT);
-
-            //Display Key matrix
-            int cellWidth = 8;
-            for (int i = 0; i < 5; i++)
+            if (str.Length % 2 == 1)
             {
-                for (int j = 0; j < 5; j++)
+                MessageBox.Show("The ciphertext always have even number of characters");
+            }    
+            else
+            {
+                //Key
+                ks = key.Length;
+                ks = RemoveSpace(ref key,ref ks);
+                ToLowerCase(key, ks);
+
+                //PlainText
+                ps = str.Length;
+                ps = RemoveSpace(ref str,ref ps);
+                ToLowerCase(str, ps);
+
+                generateKeyTable(key, ks, keyT);
+
+                //Display Key matrix
+                int cellWidth = 8;
+                for (int i = 0; i < 5; i++)
                 {
-                    string value = keyT[i, j].ToString();
-                    int padding = cellWidth - value.Length;
-                    string paddedValue = value.PadLeft(value.Length + padding / 2).PadRight(cellWidth);
-                    rtbTable.AppendText(paddedValue);
+                    for (int j = 0; j < 5; j++)
+                    {
+                        string value = keyT[i, j].ToString();
+                        int padding = cellWidth - value.Length;
+                        string paddedValue = value.PadLeft(value.Length + padding / 2).PadRight(cellWidth);
+                        rtbTable.AppendText(paddedValue);
+                    }
+                    rtbTable.AppendText(Environment.NewLine);
                 }
-                rtbTable.AppendText(Environment.NewLine);
-            }
 
-            Decrypt(ref str, keyT, ps);
+                Decrypt(ref str, keyT, ps);
 
-            for (int i = 0; i < ps; i++)
-            {
-                rtbEncrypted.AppendText(str[i].ToString());
-                if ((i + 1) % 2 == 0 && i != str.Length - 1)
-                    rtbEncrypted.AppendText(" ");
-            }
+                for (int i = 0; i < ps; i++)
+                {
+                    rtbEncrypted.AppendText(str[i].ToString());
+                    if ((i + 1) % 2 == 0 && i != str.Length - 1)
+                        rtbEncrypted.AppendText(" ");
+                }
+            }    
+           
         }
 
         private void btnClear_Click(object sender, EventArgs e)
