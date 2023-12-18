@@ -120,7 +120,7 @@ namespace playfair_and_rsa_encryption.UserControls
             return true;
         }
 
-        // Tính UCLN
+        // Tính UCLN - sử dụng giải thuật Euclid
         int CalculateGreatestCommonDivisor(int a, int b)
         {
             if (a == 0)

@@ -52,12 +52,14 @@
             // 
             // btn_gen_prime_numbers
             // 
+            btn_gen_prime_numbers.BackColor = Color.FromArgb(0, 48, 73);
+            btn_gen_prime_numbers.ForeColor = Color.Transparent;
             btn_gen_prime_numbers.Location = new Point(754, 56);
             btn_gen_prime_numbers.Name = "btn_gen_prime_numbers";
             btn_gen_prime_numbers.Size = new Size(249, 74);
             btn_gen_prime_numbers.TabIndex = 56;
             btn_gen_prime_numbers.Text = "Generate prime numbers";
-            btn_gen_prime_numbers.UseVisualStyleBackColor = true;
+            btn_gen_prime_numbers.UseVisualStyleBackColor = false;
             btn_gen_prime_numbers.Click += btn_gen_prime_numbers_Click;
             // 
             // tb_d
@@ -87,7 +89,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label4.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             label4.Location = new Point(47, 281);
             label4.Name = "label4";
             label4.Size = new Size(99, 20);
@@ -97,7 +99,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label3.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             label3.Location = new Point(47, 194);
             label3.Name = "label3";
             label3.Size = new Size(138, 20);
@@ -107,7 +109,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             label2.Location = new Point(47, 151);
             label2.Name = "label2";
             label2.Size = new Size(119, 20);
@@ -116,22 +118,26 @@
             // 
             // btn_decrypt
             // 
+            btn_decrypt.BackColor = Color.FromArgb(0, 48, 73);
+            btn_decrypt.ForeColor = Color.Transparent;
             btn_decrypt.Location = new Point(188, 526);
             btn_decrypt.Name = "btn_decrypt";
             btn_decrypt.Size = new Size(135, 47);
             btn_decrypt.TabIndex = 49;
             btn_decrypt.Text = "Decrypt";
-            btn_decrypt.UseVisualStyleBackColor = true;
+            btn_decrypt.UseVisualStyleBackColor = false;
             btn_decrypt.Click += btn_decrypt_Click;
             // 
             // btn_encrypt
             // 
+            btn_encrypt.BackColor = Color.FromArgb(0, 48, 73);
+            btn_encrypt.ForeColor = Color.Transparent;
             btn_encrypt.Location = new Point(47, 526);
             btn_encrypt.Name = "btn_encrypt";
             btn_encrypt.Size = new Size(135, 47);
             btn_encrypt.TabIndex = 48;
             btn_encrypt.Text = "Encrypt";
-            btn_encrypt.UseVisualStyleBackColor = true;
+            btn_encrypt.UseVisualStyleBackColor = false;
             btn_encrypt.Click += btn_encrypt_Click;
             // 
             // tb_e
@@ -176,7 +182,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label5.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             label5.Location = new Point(47, 422);
             label5.Name = "label5";
             label5.Size = new Size(59, 20);
@@ -186,7 +192,7 @@
             // lb_plaintext
             // 
             lb_plaintext.AutoSize = true;
-            lb_plaintext.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lb_plaintext.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             lb_plaintext.Location = new Point(47, 331);
             lb_plaintext.Name = "lb_plaintext";
             lb_plaintext.Size = new Size(79, 20);
@@ -196,7 +202,7 @@
             // lb_e
             // 
             lb_e.AutoSize = true;
-            lb_e.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lb_e.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             lb_e.Location = new Point(47, 236);
             lb_e.Name = "lb_e";
             lb_e.Size = new Size(91, 20);
@@ -206,7 +212,7 @@
             // lb_q
             // 
             lb_q.AutoSize = true;
-            lb_q.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lb_q.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             lb_q.Location = new Point(47, 103);
             lb_q.Name = "lb_q";
             lb_q.Size = new Size(122, 20);
@@ -216,7 +222,7 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label6.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             label6.Location = new Point(47, 63);
             label6.Name = "label6";
             label6.Size = new Size(122, 20);
@@ -226,7 +232,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point);
             label1.Location = new Point(412, 9);
             label1.Name = "label1";
             label1.Size = new Size(237, 41);

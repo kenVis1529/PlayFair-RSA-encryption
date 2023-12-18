@@ -209,7 +209,7 @@ namespace playfair_and_rsa_encryption.UserControls
             }
         }
 
-          static void Encrypt(ref char[] str, char[,] keyT, int ps)
+        static void Encrypt(ref char[] str, char[,] keyT, int ps)
           {
               int[] a = new int[4];
 
