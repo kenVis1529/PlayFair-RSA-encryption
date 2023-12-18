@@ -56,5 +56,10 @@ namespace playfair_and_rsa_encryption
             navigationControl.Display(1);
             navigationButtons.Highlight(btnRsa);
         }
+
+        private void panelBody_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

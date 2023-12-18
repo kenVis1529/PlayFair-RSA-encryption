@@ -36,10 +36,29 @@
             panel5 = new Panel();
             btnRsa = new Button();
             panelBody = new Panel();
+            tb_d = new TextBox();
+            tb_phi = new TextBox();
+            tb_n = new TextBox();
+            label4 = new Label();
+            label3 = new Label();
+            label2 = new Label();
+            btn_decrypt = new Button();
+            btn_encrypt = new Button();
+            tb_e = new TextBox();
+            tb_q = new TextBox();
+            tb_p = new TextBox();
+            tb_output = new RichTextBox();
+            tb_input = new RichTextBox();
+            label5 = new Label();
+            lb_plaintext = new Label();
+            lb_e = new Label();
+            lb_q = new Label();
+            label6 = new Label();
             flowLayoutPanel1.SuspendLayout();
             panel2.SuspendLayout();
             panel1.SuspendLayout();
             panel5.SuspendLayout();
+            panelBody.SuspendLayout();
             SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -128,6 +147,158 @@
             panelBody.Name = "panelBody";
             panelBody.Size = new Size(1057, 593);
             panelBody.TabIndex = 1;
+            panelBody.Paint += panelBody_Paint;
+            // 
+            // tb_d
+            // 
+            tb_d.Location = new Point(836, 94);
+            tb_d.Name = "tb_d";
+            tb_d.ReadOnly = true;
+            tb_d.Size = new Size(156, 27);
+            tb_d.TabIndex = 35;
+            // 
+            // tb_phi
+            // 
+            tb_phi.Location = new Point(509, 94);
+            tb_phi.Name = "tb_phi";
+            tb_phi.ReadOnly = true;
+            tb_phi.Size = new Size(156, 27);
+            tb_phi.TabIndex = 34;
+            // 
+            // tb_n
+            // 
+            tb_n.Location = new Point(157, 94);
+            tb_n.Name = "tb_n";
+            tb_n.ReadOnly = true;
+            tb_n.Size = new Size(156, 27);
+            tb_n.TabIndex = 33;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(737, 97);
+            label4.Name = "label4";
+            label4.Size = new Size(93, 20);
+            label4.TabIndex = 32;
+            label4.Text = "Private key d";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(376, 97);
+            label3.Name = "label3";
+            label3.Size = new Size(127, 20);
+            label3.TabIndex = 31;
+            label3.Text = "phi(N)=(p-1)(q-1)";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(36, 97);
+            label2.Name = "label2";
+            label2.Size = new Size(112, 20);
+            label2.TabIndex = 30;
+            label2.Text = "RSA modulus N";
+            // 
+            // btn_decrypt
+            // 
+            btn_decrypt.Location = new Point(177, 380);
+            btn_decrypt.Name = "btn_decrypt";
+            btn_decrypt.Size = new Size(135, 47);
+            btn_decrypt.TabIndex = 29;
+            btn_decrypt.Text = "Decrypt";
+            btn_decrypt.UseVisualStyleBackColor = true;
+            // 
+            // btn_encrypt
+            // 
+            btn_encrypt.Location = new Point(36, 380);
+            btn_encrypt.Name = "btn_encrypt";
+            btn_encrypt.Size = new Size(135, 47);
+            btn_encrypt.TabIndex = 28;
+            btn_encrypt.Text = "Encrypt";
+            btn_encrypt.UseVisualStyleBackColor = true;
+            // 
+            // tb_e
+            // 
+            tb_e.Location = new Point(836, 46);
+            tb_e.Name = "tb_e";
+            tb_e.Size = new Size(156, 27);
+            tb_e.TabIndex = 27;
+            // 
+            // tb_q
+            // 
+            tb_q.Location = new Point(509, 46);
+            tb_q.Name = "tb_q";
+            tb_q.Size = new Size(156, 27);
+            tb_q.TabIndex = 26;
+            // 
+            // tb_p
+            // 
+            tb_p.Location = new Point(157, 46);
+            tb_p.Name = "tb_p";
+            tb_p.Size = new Size(156, 27);
+            tb_p.TabIndex = 25;
+            // 
+            // tb_output
+            // 
+            tb_output.Location = new Point(36, 295);
+            tb_output.Name = "tb_output";
+            tb_output.Size = new Size(956, 53);
+            tb_output.TabIndex = 24;
+            tb_output.Text = "";
+            // 
+            // tb_input
+            // 
+            tb_input.Location = new Point(36, 204);
+            tb_input.Name = "tb_input";
+            tb_input.Size = new Size(956, 53);
+            tb_input.TabIndex = 23;
+            tb_input.Text = "";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(36, 272);
+            label5.Name = "label5";
+            label5.Size = new Size(55, 20);
+            label5.TabIndex = 22;
+            label5.Text = "Output";
+            // 
+            // lb_plaintext
+            // 
+            lb_plaintext.AutoSize = true;
+            lb_plaintext.Location = new Point(36, 181);
+            lb_plaintext.Name = "lb_plaintext";
+            lb_plaintext.Size = new Size(72, 20);
+            lb_plaintext.TabIndex = 21;
+            lb_plaintext.Text = "Input text";
+            // 
+            // lb_e
+            // 
+            lb_e.AutoSize = true;
+            lb_e.Location = new Point(737, 49);
+            lb_e.Name = "lb_e";
+            lb_e.Size = new Size(87, 20);
+            lb_e.TabIndex = 20;
+            lb_e.Text = "Public key e";
+            // 
+            // lb_q
+            // 
+            lb_q.AutoSize = true;
+            lb_q.Location = new Point(376, 49);
+            lb_q.Name = "lb_q";
+            lb_q.Size = new Size(115, 20);
+            lb_q.TabIndex = 19;
+            lb_q.Text = "Prime number q";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(36, 49);
+            label6.Name = "label6";
+            label6.Size = new Size(115, 20);
+            label6.TabIndex = 18;
+            label6.Text = "Prime number p";
             // 
             // Form1
             // 
@@ -143,6 +314,8 @@
             panel2.PerformLayout();
             panel1.ResumeLayout(false);
             panel5.ResumeLayout(false);
+            panelBody.ResumeLayout(false);
+            panelBody.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -156,5 +329,23 @@
         private Button btnRsa;
         private Label label1;
         private Panel panelBody;
+        private TextBox tb_d;
+        private TextBox tb_phi;
+        private TextBox tb_n;
+        private Label label4;
+        private Label label3;
+        private Label label2;
+        private Button btn_decrypt;
+        private Button btn_encrypt;
+        private TextBox tb_e;
+        private TextBox tb_q;
+        private TextBox tb_p;
+        private RichTextBox tb_output;
+        private RichTextBox tb_input;
+        private Label label5;
+        private Label lb_plaintext;
+        private Label lb_e;
+        private Label lb_q;
+        private Label label6;
     }
 }
